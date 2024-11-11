@@ -1,0 +1,17 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Laptop Dell XPS 13",
+      "price": 20000000,
+      "image": "https://example.com/image1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Laptop HP Spectre x360",
+      "price": 25000000,
+      "image": "https://example.com/image2.jpg"
+    }
+  ],
+  "users": []
+}
