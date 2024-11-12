@@ -126,6 +126,32 @@
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination-button:not(:disabled):hover {
+  background-color: #e53e3e;
+}
+
+.pagination span {
+  font-weight: bold;
+  font-size: 1.1em;
 }
 </style>
 

@@ -2,7 +2,7 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    cart: JSON.parse(localStorage.getItem('cart')) || [], // Khởi tạo giỏ hàng từ localStorage
+    cart: JSON.parse(localStorage.getItem('cart')) || [], // Lấy giỏ hàng từ localStorage
   },
   mutations: {
     addToCart(state, product) {
@@ -14,9 +14,15 @@ export default createStore({
       }
       localStorage.setItem('cart', JSON.stringify(state.cart)); // Lưu giỏ hàng vào localStorage
     },
-    removeFromCart(state, productId) {
-      state.cart = state.cart.filter(item => item.id !== productId);
-      localStorage.setItem('cart', JSON.stringify(state.cart)); // Lưu giỏ hàng vào localStorage
+    removeFromCart(state, index) {
+      state.cart.splice(index, 1);
+
+      // Kiểm tra nếu giỏ hàng trống sau khi xóa
+      if (state.cart.length === 0) {
+        localStorage.removeItem('cart');
+      } else {
+        localStorage.setItem('cart', JSON.stringify(state.cart)); // Cập nhật giỏ hàng vào localStorage
+      }
     },
     updateQuantity(state, { productId, quantity }) {
       const product = state.cart.find(item => item.id === productId);

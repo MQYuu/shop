@@ -6,7 +6,7 @@
         <img :src="getImageUrl(product.image)" alt="Product Image" class="cart-item-image" />
         <div class="cart-item-details">
           <h3>{{ product.name }}</h3>
-          <p>{{ formatCurrency(product.price) }}</p> <!-- Sử dụng phương thức formatCurrency -->
+          <p>{{ formatCurrency(product.price) }}</p>
           <div class="quantity-control">
             <button @click="decreaseQuantity(index)" :disabled="product.quantity <= 1">-</button>
             <span>{{ product.quantity }}</span>
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="cart-summary">
-        <p>Tổng tiền: {{ formatCurrency(totalAmount) }}</p> <!-- Sử dụng phương thức formatCurrency -->
+        <p>Tổng tiền: {{ formatCurrency(totalAmount) }}</p>
         <button @click="checkout">Thanh toán</button>
       </div>
     </div>
@@ -26,21 +26,13 @@
 
 <script>
 export default {
-  data() {
-    return {
-      cart: JSON.parse(localStorage.getItem('cart')) || [], // Lấy giỏ hàng từ localStorage
-    };
-  },
   computed: {
-    totalAmount() {
-      return this.cart.reduce((total, product) => total + product.price * product.quantity, 0);
+    cart() {
+      return this.$store.getters.cartItems; // Lấy giỏ hàng từ Vuex store
     },
-  },
-  created() {
-    if (!localStorage.getItem('userLoggedIn')) {
-      // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
-      this.$router.push({ name: 'Login' });
-    }
+    totalAmount() {
+      return this.$store.getters.totalAmount; // Tính tổng tiền từ Vuex store
+    },
   },
   methods: {
     getImageUrl(imageName) {
@@ -52,38 +44,38 @@ export default {
       }
     },
     increaseQuantity(index) {
-      this.cart[index].quantity++;
-      this.updateCart();
+      const productId = this.cart[index].id;
+      this.$store.commit('updateQuantity', { productId, quantity: this.cart[index].quantity + 1 });
     },
     decreaseQuantity(index) {
+      const productId = this.cart[index].id;
       if (this.cart[index].quantity > 1) {
-        this.cart[index].quantity--;
-        this.updateCart();
+        this.$store.commit('updateQuantity', { productId, quantity: this.cart[index].quantity - 1 });
       }
     },
     removeFromCart(index) {
-      this.cart.splice(index, 1);
-      this.updateCart();
-    },
-    updateCart() {
-      localStorage.setItem('cart', JSON.stringify(this.cart)); // Cập nhật giỏ hàng trong localStorage
+      this.$store.commit('removeFromCart', index); // Xóa sản phẩm từ giỏ hàng
     },
     checkout() {
-      // Logic thanh toán sẽ được thực hiện ở đây, có thể điều hướng đến trang thanh toán.
       alert('Thanh toán thành công!');
     },
-    // Phương thức format giá
     formatCurrency(price) {
       return price.toLocaleString('vi-VN', {
         style: 'currency',
-        currency: 'VND'
+        currency: 'VND',
       });
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
+p {
+  font-size: 1.2em;
+  color: #888;
+  font-weight: bold;
+  margin-top: 30px;
+}
 .cart-page {
   padding: 20px;
   text-align: center;
@@ -170,15 +162,43 @@ h1 {
 }
 
 .cart-summary {
-  margin-top: 20px;
-  font-size: 1.2em;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f0f8f7;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 1.1em;
+  width: 90%;
+  text-align: center;
+}
+
+.cart-summary p {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 20px;
 }
 
 .cart-summary button {
-  background-color: #00cc66;
+  background-color: #28a745;
   color: white;
   padding: 10px 20px;
-  border-radius: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
   cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.cart-summary button:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 10px rgba(33, 136, 56, 0.4);
+  transform: translateY(-2px);
+}
+
+.cart-summary button:active {
+  background-color: #1e7e34;
+  transform: translateY(1px);
 }
 </style>
