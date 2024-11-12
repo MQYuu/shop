@@ -28,49 +28,43 @@ p {
   margin-top: 30px;
 }
 </style>
-
-<script>
-export default {
-  props: {
-    product: Object, // Nhận dữ liệu sản phẩm từ component cha
-  },
-  methods: {
-    // Hàm trả về đường dẫn ảnh từ thư mục assets/images
-    getImageUrl(imageName) {
-      try {
-        return require(`@/assets/images/${imageName}`);
-      } catch (error) {
-        console.error('Không thể tải ảnh:', error);
-        return ''; // Trả về một chuỗi rỗng nếu không tìm thấy hình ảnh
-      }
+  
+  <script>
+  
+  export default {
+    props: {
+      product: Object, // Nhận dữ liệu sản phẩm từ component cha
     },
-
-    // Điều hướng đến trang chi tiết sản phẩm
-    goToProductDetail(productId) {
-      this.$router.push({ name: 'ProductDetail', params: { id: productId } });
+    methods: {
+      // Hàm trả về đường dẫn ảnh từ thư mục assets/images
+      getImageUrl(imageName) {
+        try {
+          return require(`@/assets/images/${imageName}`);
+        } catch (error) {
+          console.error('Không thể tải ảnh:', error);
+          return ''; // Trả về một chuỗi rỗng nếu không tìm thấy hình ảnh
+        }
+      },
+  
+      // Điều hướng đến trang chi tiết sản phẩm
+      goToProductDetail(productId) {
+        this.$router.push({ name: 'ProductDetail', params: { id: productId } });
+      },
+  
+      // Thêm sản phẩm vào giỏ hàng và chuyển hướng tới trang giỏ hàng
+      addToCartAndRedirect(product) {
+        if (!localStorage.getItem('userLoggedIn')) {
+          // Nếu người dùng chưa đăng nhập, yêu cầu đăng nhập
+          alert('Bạn chưa đăng nhập. Vui lòng đăng nhập trước khi thêm vào giỏ hàng.');
+          this.$router.push({ name: 'LoginPage' });  // Chuyển hướng đến trang đăng nhập
+        } else {
+          // Nếu đã đăng nhập, thêm sản phẩm vào giỏ hàng và chuyển hướng đến giỏ hàng
+          this.$store.commit('addToCart', product);  // Gọi mutation addToCart trong Vuex
+          alert(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
+          this.$router.push('/cart'); // Chuyển hướng đến trang giỏ hàng
+        }
+      },
     },
-
-    // Thêm sản phẩm vào giỏ hàng và chuyển hướng tới trang giỏ hàng
-    addToCartAndRedirect(product) {
-      if (!localStorage.getItem('userLoggedIn')) {
-        // Nếu người dùng chưa đăng nhập, yêu cầu đăng nhập
-        alert('Bạn chưa đăng nhập. Vui lòng đăng nhập trước khi thêm vào giỏ hàng.');
-        // this.$router.push({ name: 'LoginPage' });  // Chuyển hướng đến trang đăng nhập
-      } else {
-        // Nếu đã đăng nhập, thêm sản phẩm vào giỏ hàng và chuyển hướng đến giỏ hàng
-        this.$store.commit('addToCart', product);  // Gọi mutation addToCart trong Vuex
-        alert(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
-        // this.$router.push('/cart'); // Chuyển hướng đến trang giỏ hàng
-      }
-    },
-
-    // Phương thức format giá
-    formatCurrency(price) {
-      return price.toLocaleString('vi-VN', {
-        style: 'currency',
-        currency: 'VND'
-      });
-    }
-  },
-};
-</script>
+  };
+  </script>
+  

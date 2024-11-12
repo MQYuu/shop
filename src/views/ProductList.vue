@@ -126,55 +126,6 @@
   margin-top: 20px;
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-.pagination-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  background-color: #ff6347;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 0 10px;
-}
-
-.pagination-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.pagination-button:hover {
-  background-color: #e53e3e;
-}
-
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-  }
-
-  .search-input {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .search-button {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .filters-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-p {
-  font-size: 1.2em;
-  color: #888;
-  font-weight: bold;
-  margin-top: 30px;
 }
 </style>
 
@@ -242,23 +193,14 @@ export default {
     }
   },
   mounted() {
-    // Kiểm tra xem dữ liệu đã có trong localStorage chưa
-    const storedProducts = localStorage.getItem('products');
-    if (storedProducts) {
-      // Nếu có dữ liệu trong localStorage, sử dụng dữ liệu đó
-      this.products = JSON.parse(storedProducts);
-    } else {
-      // Nếu không có, gọi API để lấy dữ liệu
-      getBubbleTeas()
-        .then(data => {
-          this.products = data;
-          // Lưu dữ liệu vào localStorage
-          localStorage.setItem('products', JSON.stringify(this.products));
-        })
-        .catch(error => {
-          console.error('Có lỗi xảy ra khi lấy dữ liệu sản phẩm:', error);
-        });
-    }
+    // Gọi getBubbleTeas() từ api.js khi component được tạo ra
+    getBubbleTeas()
+      .then(data => {
+        this.products = data; // Gán dữ liệu nhận được vào `products`
+      })
+      .catch(error => {
+        console.error('Có lỗi xảy ra khi lấy dữ liệu sản phẩm:', error);
+      });
   },
 };
 </script>
