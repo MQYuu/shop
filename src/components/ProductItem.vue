@@ -50,12 +50,12 @@ button:hover {
         if (!localStorage.getItem('userLoggedIn')) {
           // Nếu người dùng chưa đăng nhập, yêu cầu đăng nhập
           alert('Bạn chưa đăng nhập. Vui lòng đăng nhập trước khi thêm vào giỏ hàng.');
-          this.$router.push({ name: 'LoginPage' });  // Chuyển hướng đến trang đăng nhập
+          // this.$router.push({ name: 'LoginPage' });  // Chuyển hướng đến trang đăng nhập
         } else {
           // Nếu đã đăng nhập, thêm sản phẩm vào giỏ hàng và chuyển hướng đến giỏ hàng
           this.$store.commit('addToCart', product);  // Gọi mutation addToCart trong Vuex
           alert(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
-          this.$router.push('/cart'); // Chuyển hướng đến trang giỏ hàng
+          // this.$router.push('/cart'); // Chuyển hướng đến trang giỏ hàng
         }
       },
     },
