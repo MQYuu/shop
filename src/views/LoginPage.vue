@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { loginUser } from '@/api/users';  // Import API loginUser
+
 export default {
   data() {
     return {
@@ -40,15 +42,19 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
-      // Kiểm tra tài khoản và mật khẩu (có thể thay bằng API thực tế)
-      if (this.email === 'user@example.com' && this.password === '123456') {
-        localStorage.setItem('userLoggedIn', true); // Lưu trạng thái đăng nhập
-        this.$router.push({ name: 'Home' }).then(() => {
-      this.$router.go(0);  // Điều hướng lại trang hiện tại (làm mới)
-  });
-      } else {
-        this.errorMessage = 'Email hoặc mật khẩu không đúng!';
+    async handleLogin() {
+      try {
+        // Gửi thông tin đăng nhập tới API
+        const response = await loginUser(this.email, this.password);
+        
+        if (response.success) {
+          // Lưu thông tin người dùng vào localStorage
+          localStorage.setItem('userLoggedIn', true);
+          localStorage.setItem('userEmail', response.user.email);  // Lưu email người dùng
+          this.$router.push({ name: 'Home' });  // Chuyển đến trang chủ
+        }
+      } catch (error) {
+        this.errorMessage = error.message;  // Hiển thị lỗi nếu có
       }
     },
   },
