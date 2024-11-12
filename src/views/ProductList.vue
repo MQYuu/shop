@@ -8,32 +8,6 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
-import ProductItem from '../components/ProductItem.vue';
-
-export default {
-  components: {
-    ProductItem, // Đăng ký component ProductItem
-  },
-  data() {
-    return {
-      products: [], // Để trống và sẽ lấy dữ liệu từ JSON Server
-    };
-  },
-  mounted() {
-    // Gọi axios để lấy dữ liệu từ JSON Server khi component được tạo ra
-    axios.get('http://localhost:3000/bubbleTeas')
-      .then(response => {
-        this.products = response.data; // Gán dữ liệu nhận được vào `products`
-      })
-      .catch(error => {
-        console.error('Có lỗi xảy ra khi lấy dữ liệu sản phẩm:', error);
-      });
-  },
-};
-</script>
-
 <style scoped>
 .product-detail {
   text-align: center;
@@ -45,8 +19,32 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
-
-.product-list .product-item {
-  margin: 10px;
-}
 </style>
+
+<script>
+// Import phương thức getBubbleTeas từ bubbleTea.js
+import { getBubbleTeas } from '../api/bubbleTea.js';
+import ProductItem from '../components/ProductItem.vue';
+
+export default {
+  components: {
+    ProductItem, // Đăng ký component ProductItem
+  },
+  data() {
+    return {
+      products: [], // Để trống và sẽ lấy dữ liệu từ API
+    };
+  },
+  mounted() {
+    // Gọi getBubbleTeas() từ api.js khi component được tạo ra
+    getBubbleTeas()
+      .then(data => {
+        this.products = data; // Gán dữ liệu nhận được vào `products`
+      })
+      .catch(error => {
+        console.error('Có lỗi xảy ra khi lấy dữ liệu sản phẩm:', error);
+      });
+  },
+};
+</script>
+
