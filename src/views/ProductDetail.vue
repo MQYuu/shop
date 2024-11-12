@@ -12,6 +12,11 @@
       />
     </div>
     <p v-else>Không tìm thấy sản phẩm.</p>
+
+    <!-- Hiển thị thông báo yêu cầu đăng nhập nếu người dùng chưa đăng nhập -->
+    <div v-if="!isLoggedIn" class="login-prompt">
+      <p>Vui lòng <a href="/login">đăng nhập</a> để thêm sản phẩm vào giỏ hàng.</p>
+    </div>
   </div>
 </template>
 
@@ -31,6 +36,9 @@ export default {
     const router = useRouter();
     const productId = ref(null);
     const product = ref(null);
+    
+    // Giả sử đây là trạng thái đăng nhập của người dùng
+    const isLoggedIn = ref(false);  // Giá trị này có thể được lấy từ hệ thống xác thực thực tế
 
     // Fetch bubble teas when the component is mounted
     onMounted(() => {
@@ -72,9 +80,14 @@ export default {
     };
 
     const addToCartAndRedirect = (product) => {
-      console.log(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
-      alert(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
-      router.push('/cart');
+      if (!isLoggedIn.value) {
+        alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.');
+        // router.push('/login');  // Chuyển hướng người dùng đến trang đăng nhập
+      } else {
+        console.log(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
+        alert(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
+        router.push('/cart');
+      }
     };
 
     const goBackToProducts = () => {
@@ -87,6 +100,7 @@ export default {
       getImageUrl,
       addToCartAndRedirect,
       goBackToProducts,
+      isLoggedIn,  // Trả về biến trạng thái đăng nhập
     };
   },
 };
@@ -109,5 +123,16 @@ h1 {
   color: #333;
   margin-bottom: 20px;
   font-weight: bold;
+}
+
+.login-prompt {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #ff0000;
+}
+
+.login-prompt a {
+  color: #007bff;
+  text-decoration: none;
 }
 </style>
