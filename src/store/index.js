@@ -14,14 +14,15 @@ export default createStore({
       }
       localStorage.setItem('cart', JSON.stringify(state.cart)); // Lưu giỏ hàng vào localStorage
     },
-    removeFromCart(state, index) {
-      state.cart.splice(index, 1);
-
-      // Kiểm tra nếu giỏ hàng trống sau khi xóa
-      if (state.cart.length === 0) {
-        localStorage.removeItem('cart');
-      } else {
-        localStorage.setItem('cart', JSON.stringify(state.cart)); // Cập nhật giỏ hàng vào localStorage
+    removeFromCart(state, productId) {
+      const index = state.cart.findIndex(item => item.id === productId);
+      if (index !== -1) {
+        state.cart.splice(index, 1);
+        if (state.cart.length === 0) {
+          localStorage.removeItem('cart'); // Xóa giỏ hàng khi trống
+        } else {
+          localStorage.setItem('cart', JSON.stringify(state.cart)); // Cập nhật giỏ hàng vào localStorage
+        }
       }
     },
     updateQuantity(state, { productId, quantity }) {

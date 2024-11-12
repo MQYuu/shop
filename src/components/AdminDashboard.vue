@@ -4,7 +4,6 @@
       <nav>
         <ul>
           <li><router-link to="/admin/products">Quản lý sản phẩm</router-link></li>
-          <li><router-link to="/admin/orders">Quản lý đơn hàng</router-link></li>
           <li><router-link to="/admin/users">Quản lý người dùng</router-link></li>
         </ul>
       </nav>

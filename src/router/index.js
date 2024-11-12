@@ -6,7 +6,6 @@ import LoginPage from '@/views/LoginPage.vue';
 import ProductDetail from '@/views/ProductDetail.vue';  // Import ProductDetail
 import AdminDashboard from '@/components/AdminDashboard.vue';  // Trang admin
 import AdminProduct from '@/components/AdminProduct.vue'; // Trang quản lý sản phẩm admin
-import AdminOrder from '@/components/AdminOrder.vue'; // Trang quản lý đơn hàng admin
 import AdminUser from '@/components/AdminUser.vue'; // Trang quản lý người dùng admin
 
 const routes = [
@@ -20,7 +19,6 @@ const routes = [
     component: AdminDashboard,  // Trang admin
     children: [
       { path: 'products', component: AdminProduct },
-      { path: 'orders', component: AdminOrder },
       { path: 'users', component: AdminUser },
     ],
   },

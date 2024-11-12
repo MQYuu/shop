@@ -15,14 +15,8 @@
         <label for="description">Mô tả:</label>
         <textarea v-model="newProduct.description" id="description" required></textarea>
 
-        <!-- Trường hình ảnh -->
         <label for="image">Hình ảnh:</label>
-        <input type="file" id="image" @change="handleImageUpload" required />
-
-        <!-- Hiển thị ảnh đã chọn -->
-        <div v-if="imagePreview" class="image-preview">
-          <img :src="imagePreview" alt="Image Preview" />
-        </div>
+        <input type="file" id="image" @change="handleImageChange" />
 
         <button type="submit">Thêm sản phẩm</button>
       </form>
@@ -46,7 +40,10 @@
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
             <td>{{ product.description }}</td>
-            <td><img :src="product.image" alt="Product Image" width="50" height="50" /></td>
+            <td>
+              <!-- Hiển thị ảnh -->
+              <img :src="getImageUrl(product.image)" alt="Image" width="50" height="50" />
+            </td>
             <td>
               <button @click="editProduct(product)">Sửa</button>
               <button @click="deleteProduct(product.id)">Xóa</button>
@@ -55,48 +52,19 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Form chỉnh sửa sản phẩm -->
-    <div v-if="editingProduct" class="edit-product-form">
-      <h3>Chỉnh sửa sản phẩm</h3>
-      <form @submit.prevent="updateProduct">
-        <label for="edit-name">Tên sản phẩm:</label>
-        <input v-model="editingProduct.name" type="text" id="edit-name" required />
-
-        <label for="edit-price">Giá:</label>
-        <input v-model="editingProduct.price" type="number" id="edit-price" required />
-
-        <label for="edit-description">Mô tả:</label>
-        <textarea v-model="editingProduct.description" id="edit-description" required></textarea>
-
-        <label for="edit-image">Hình ảnh:</label>
-        <input type="file" id="edit-image" @change="handleEditImageUpload" />
-
-        <div v-if="editImagePreview" class="image-preview">
-          <img :src="editImagePreview" alt="Edit Image Preview" />
-        </div>
-
-        <button type="submit">Cập nhật sản phẩm</button>
-        <button type="button" @click="cancelEdit">Hủy</button>
-      </form>
-    </div>
   </div>
 </template>
 
 <script>
-import { getBubbleTeas, addBubbleTea, updateBubbleTea, deleteBubbleTea } from '../api/bubbleTea'; // Import các API
+import { getBubbleTeas, addBubbleTea, updateBubbleTea, deleteBubbleTea } from '../api/bubbleTea'; 
 
 export default {
   name: 'AdminProduct',
   data() {
     return {
       products: [], // Danh sách sản phẩm
-      newProduct: { name: '', price: '', description: '', image: '' }, // Dữ liệu cho sản phẩm mới
+      newProduct: { name: '', price: '', description: '', image: null }, // Dữ liệu cho sản phẩm mới
       editingProduct: null, // Sản phẩm đang được chỉnh sửa
-      imagePreview: null, // Preview hình ảnh cho sản phẩm mới
-      editImagePreview: null, // Preview hình ảnh cho sản phẩm đang chỉnh sửa
-      imageFile: null, // Dữ liệu file hình ảnh cho sản phẩm mới
-      editImageFile: null, // Dữ liệu file hình ảnh cho sản phẩm đang chỉnh sửa
     };
   },
   methods: {
@@ -117,14 +85,15 @@ export default {
       formData.append('name', this.newProduct.name);
       formData.append('price', this.newProduct.price);
       formData.append('description', this.newProduct.description);
-      formData.append('image', this.imageFile); // Thêm hình ảnh vào form data
+      if (this.newProduct.image) {
+        formData.append('image', this.newProduct.image); // Thêm hình ảnh vào FormData
+      }
 
       addBubbleTea(formData)
         .then(() => {
-          this.fetchProducts(); // Cập nhật lại danh sách sản phẩm
-          this.newProduct = { name: '', price: '', description: '', image: '' }; // Reset form
-          this.imagePreview = null; // Reset preview
-          this.showSuccessMessage('Thêm sản phẩm thành công!'); // Hiển thị thông báo thành công
+          this.fetchProducts();
+          this.newProduct = { name: '', price: '', description: '', image: null };
+          this.showSuccessMessage('Thêm sản phẩm thành công!');
         })
         .catch(error => {
           console.error('Lỗi khi thêm sản phẩm:', error);
@@ -133,7 +102,6 @@ export default {
 
     // Hiển thị thông báo thành công
     showSuccessMessage(message) {
-      // Tạo thông báo
       const successMessage = document.createElement('div');
       successMessage.textContent = message;
       successMessage.style.position = 'fixed';
@@ -144,77 +112,62 @@ export default {
       successMessage.style.color = 'white';
       successMessage.style.borderRadius = '5px';
       successMessage.style.zIndex = '9999';
-      
-      // Hiển thị thông báo trong 3 giây
+
       document.body.appendChild(successMessage);
       setTimeout(() => {
         successMessage.remove();
       }, 3000);
     },
 
-    // Chọn hình ảnh và hiển thị preview
-    handleImageUpload(event) {
+    // Xử lý thay đổi hình ảnh
+    handleImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        this.imageFile = file;
-        this.imagePreview = URL.createObjectURL(file); // Hiển thị preview
+        this.newProduct.image = file; // Lưu tệp hình ảnh
       }
     },
 
-    // Sửa sản phẩm
-    editProduct(product) {
-      this.editingProduct = { ...product }; // Sao chép thông tin sản phẩm để chỉnh sửa
+    // Lấy URL ảnh từ thư mục src/assets/images
+    getImageUrl(imageName) {
+      // Dùng require hoặc import để truy cập hình ảnh trong thư mục src
+      return require(`@/assets/images/${imageName}`);  // @ là alias cho src trong Vue CLI
     },
 
-    // Cập nhật sản phẩm
+    editProduct(product) {
+      this.editingProduct = { ...product };
+    },
+
     updateProduct() {
       const formData = new FormData();
       formData.append('name', this.editingProduct.name);
       formData.append('price', this.editingProduct.price);
       formData.append('description', this.editingProduct.description);
-      if (this.editImageFile) {
-        formData.append('image', this.editImageFile); // Thêm hình ảnh nếu có thay đổi
+      if (this.editingProduct.image) {
+        formData.append('image', this.editingProduct.image);
       }
 
       updateBubbleTea(this.editingProduct.id, formData)
         .then(() => {
-          this.fetchProducts(); // Cập nhật lại danh sách sản phẩm
-          this.editingProduct = null; // Dừng chỉnh sửa
-          this.editImagePreview = null; // Reset preview
+          this.fetchProducts();
+          this.editingProduct = null;
         })
         .catch(error => {
           console.error('Lỗi khi cập nhật sản phẩm:', error);
         });
     },
 
-    // Hủy chỉnh sửa
-    cancelEdit() {
-      this.editingProduct = null;
-      this.editImagePreview = null;
-    },
-
-    // Xóa sản phẩm
     deleteProduct(id) {
       deleteBubbleTea(id)
         .then(() => {
-          this.fetchProducts(); // Cập nhật lại danh sách sản phẩm
+          this.fetchProducts();
         })
         .catch(error => {
           console.error('Lỗi khi xóa sản phẩm:', error);
         });
     },
-
-    // Chọn hình ảnh khi chỉnh sửa
-    handleEditImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.editImageFile = file;
-        this.editImagePreview = URL.createObjectURL(file); // Hiển thị preview
-      }
-    },
   },
   mounted() {
-    this.fetchProducts(); // Lấy danh sách sản phẩm khi trang được tải
+    this.fetchProducts();
   },
 };
 </script>
@@ -261,16 +214,6 @@ form button:hover {
   background-color: #45a049;
 }
 
-.image-preview {
-  margin-top: 10px;
-}
-
-.image-preview img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-}
-
 .product-list table {
   width: 100%;
   border-collapse: collapse;
@@ -284,12 +227,6 @@ form button:hover {
 
 .product-list table th {
   background-color: #f4f4f4;
-}
-
-.product-list table td img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
 }
 
 .product-list button {

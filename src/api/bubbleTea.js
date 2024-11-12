@@ -5,62 +5,58 @@ const API_URL = 'http://localhost:3000/bubbleTeas';
 // Lấy danh sách tất cả các sản phẩm bubble tea
 export const getBubbleTeas = () => {
   return axios.get(API_URL)
-    .then(response => response.data) // Trả về dữ liệu sau khi lấy thành công
+    .then(response => response.data)
     .catch(error => {
-      console.error('Lỗi khi lấy danh sách bubble tea:', error); // In ra lỗi nếu có
+      console.error('Lỗi khi lấy danh sách bubble tea:', error);
       throw error;
     });
 };
 
-// Thêm một sản phẩm bubble tea mới (hỗ trợ hình ảnh)
-export const addBubbleTea = (newBubbleTea, imageFile) => {
+// Thêm một sản phẩm bubble tea mới
+export const addBubbleTea = (newBubbleTea) => {
   const formData = new FormData();
-  formData.append('name', newBubbleTea.name); // Thêm tên sản phẩm
-  formData.append('price', newBubbleTea.price); // Thêm giá sản phẩm
-  formData.append('description', newBubbleTea.description); // Thêm mô tả sản phẩm
-
-  if (imageFile) {
-    formData.append('image', imageFile); // Thêm hình ảnh vào form data nếu có
+  formData.append('name', newBubbleTea.name);
+  formData.append('price', newBubbleTea.price);
+  formData.append('description', newBubbleTea.description);
+  if (newBubbleTea.image) {
+    formData.append('image', newBubbleTea.image); // Thêm hình ảnh vào FormData
   }
 
   return axios.post(API_URL, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data', // Xác định rằng dữ liệu gửi đi là loại multipart (hình ảnh, file)
+      'Content-Type': 'multipart/form-data',
     }
   })
     .then(response => {
-      console.log('Thêm sản phẩm thành công:', response.data); // Log dữ liệu trả về từ server
-      return response.data; // Trả về dữ liệu sản phẩm đã thêm
+      return response.data;
     })
     .catch(error => {
-      console.error('Lỗi khi thêm bubble tea:', error); // In ra lỗi nếu có
-      throw error; // Ném lỗi để có thể xử lý ở nơi khác
+      console.error('Lỗi khi thêm bubble tea:', error);
+      throw error;
     });
 };
 
-// Cập nhật thông tin sản phẩm bubble tea (hỗ trợ hình ảnh)
-export const updateBubbleTea = (id, updatedBubbleTea, imageFile) => {
+// Cập nhật thông tin sản phẩm bubble tea
+export const updateBubbleTea = (id, updatedBubbleTea) => {
   const formData = new FormData();
-  formData.append('name', updatedBubbleTea.name); // Cập nhật tên sản phẩm
-  formData.append('price', updatedBubbleTea.price); // Cập nhật giá sản phẩm
-  formData.append('description', updatedBubbleTea.description); // Cập nhật mô tả sản phẩm
-
-  if (imageFile) {
-    formData.append('image', imageFile); // Thêm hình ảnh vào form data nếu có
+  formData.append('name', updatedBubbleTea.name);
+  formData.append('price', updatedBubbleTea.price);
+  formData.append('description', updatedBubbleTea.description);
+  if (updatedBubbleTea.image) {
+    formData.append('image', updatedBubbleTea.image); // Thêm hình ảnh vào FormData
   }
 
   return axios.put(`${API_URL}/${id}`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data', // Xác định dữ liệu gửi đi là loại multipart
+      'Content-Type': 'multipart/form-data',
     }
   })
     .then(response => {
-      console.log('Cập nhật sản phẩm thành công:', response.data); // Log thông báo cập nhật thành công
-      return response.data; // Trả về dữ liệu đã cập nhật
+      return response.data;
     })
     .catch(error => {
-      console.error('Lỗi khi cập nhật bubble tea:', error); // In ra lỗi nếu có
-      throw error; // Ném lỗi để xử lý ở nơi khác
+      console.error('Lỗi khi cập nhật bubble tea:', error);
+      throw error;
     });
 };
 
@@ -68,11 +64,10 @@ export const updateBubbleTea = (id, updatedBubbleTea, imageFile) => {
 export const deleteBubbleTea = (id) => {
   return axios.delete(`${API_URL}/${id}`)
     .then(response => {
-      console.log('Xóa sản phẩm thành công:', response.data); // Log thông báo xóa thành công
-      return response.data; // Trả về dữ liệu sau khi xóa
+      return response.data;
     })
     .catch(error => {
-      console.error('Lỗi khi xóa bubble tea:', error); // In ra lỗi nếu có
-      throw error; // Ném lỗi để xử lý ở nơi khác
+      console.error('Lỗi khi xóa bubble tea:', error);
+      throw error;
     });
 };

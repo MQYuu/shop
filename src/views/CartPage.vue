@@ -2,17 +2,17 @@
   <div class="cart-page">
     <h1>Giỏ Hàng</h1>
     <div v-if="cart.length > 0" class="cart-items">
-      <div v-for="(product, index) in cart" :key="product.id" class="cart-item">
-        <img :src="getImageUrl(product.image)" alt="Product Image" class="cart-item-image" />
+      <div v-for="product in cart" :key="product.id" class="cart-item">
+        <img :src="getImageUrl(product.image)" alt="Hình ảnh sản phẩm" class="cart-item-image" />
         <div class="cart-item-details">
           <h3>{{ product.name }}</h3>
           <p>{{ formatCurrency(product.price) }}</p>
           <div class="quantity-control">
-            <button @click="decreaseQuantity(index)" :disabled="product.quantity <= 1">-</button>
+            <button @click="decreaseQuantity(product.id)" :disabled="product.quantity <= 1">-</button>
             <span>{{ product.quantity }}</span>
-            <button @click="increaseQuantity(index)">+</button>
+            <button @click="increaseQuantity(product.id)">+</button>
           </div>
-          <button class="remove-item" @click="removeFromCart(index)">Xóa</button>
+          <button class="remove-item" @click="removeFromCart(product.id)">Xóa</button>
         </div>
       </div>
       <div class="cart-summary">
@@ -32,7 +32,7 @@ export default {
     },
     totalAmount() {
       return this.$store.getters.totalAmount; // Tính tổng tiền từ Vuex store
-    },
+    }
   },
   methods: {
     getImageUrl(imageName) {
@@ -43,18 +43,20 @@ export default {
         return ''; // Trả về chuỗi rỗng nếu không tìm thấy hình ảnh
       }
     },
-    increaseQuantity(index) {
-      const productId = this.cart[index].id;
-      this.$store.commit('updateQuantity', { productId, quantity: this.cart[index].quantity + 1 });
-    },
-    decreaseQuantity(index) {
-      const productId = this.cart[index].id;
-      if (this.cart[index].quantity > 1) {
-        this.$store.commit('updateQuantity', { productId, quantity: this.cart[index].quantity - 1 });
+    increaseQuantity(productId) {
+      const product = this.cart.find(p => p.id === productId);
+      if (product) {
+        this.$store.commit('updateQuantity', { productId, quantity: product.quantity + 1 });
       }
     },
-    removeFromCart(index) {
-      this.$store.commit('removeFromCart', index); // Xóa sản phẩm từ giỏ hàng
+    decreaseQuantity(productId) {
+      const product = this.cart.find(p => p.id === productId);
+      if (product && product.quantity > 1) {
+        this.$store.commit('updateQuantity', { productId, quantity: product.quantity - 1 });
+      }
+    },
+    removeFromCart(productId) {
+      this.$store.commit('removeFromCart', productId); // Xóa sản phẩm khỏi giỏ hàng
     },
     checkout() {
       alert('Thanh toán thành công!');
@@ -64,8 +66,8 @@ export default {
         style: 'currency',
         currency: 'VND',
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
