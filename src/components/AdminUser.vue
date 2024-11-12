@@ -129,68 +129,134 @@ export default {
 
 <style scoped>
 .admin-user {
-  margin: 20px;
+    margin: 20px;
+    font-family: Arial, sans-serif;
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #ccc;
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 1.1em;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 button {
-  background-color: #4caf50;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 5px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s;
+    width: 100%;
+    max-width: 150px;
 }
 
 button:hover {
-  background-color: #45a049;
+    background-color: #45a049;
+    transform: scale(1.05);
 }
 
+button:active {
+    transform: scale(0.98);
+}
+
+/* Button Styles with Semantic Class Names */
+.btn-primary {
+    background-color: #4CAF50;
+}
+
+.btn-secondary {
+    background-color: #c7daed;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-warning {
+    background-color: #ff9f00;
+}
+
+/* Modal */
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease;
 }
 
 .modal input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
 }
 
 .modal button {
-  width: 48%;
-  margin-top: 10px;
+    width: 48%;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
 }
 
-.modal button:first-child {
-  margin-right: 4%;
+.modal .btn-primary {
+    background-color: #007bff;
+}
+
+.modal .btn-danger {
+    background-color: #dc3545;
+}
+
+/* Animation for modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 </style>

@@ -4,13 +4,13 @@
       "id": "1",
       "email": "user1@example.com",
       "password": "password1",
-      "isActive": false
+      "isActive": true
     },
     {
       "id": "2",
       "email": "user2@example.com",
       "password": "password2",
-      "isActive": false
+      "isActive": true
     },
     {
       "id": "3",
@@ -28,7 +28,7 @@
       "id": "5",
       "email": "user5@example.com",
       "password": "password5",
-      "isActive": false
+      "isActive": true
     },
     {
       "id": "6",
@@ -46,7 +46,7 @@
       "id": "8",
       "email": "user8@example.com",
       "password": "password8",
-      "isActive": false
+      "isActive": true
     },
     {
       "id": "9",
@@ -58,7 +58,7 @@
       "id": "10",
       "email": "user10@example.com",
       "password": "password10",
-      "isActive": false
+      "isActive": true
     }
   ]
 }
