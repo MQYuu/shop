@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import '../components/ProductList.css';
 export default {
   data() {
     return {
@@ -48,7 +49,8 @@ export default {
 </script>
 
 <style scoped>
-.product-list {
+
+/* .product-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -78,7 +80,7 @@ export default {
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
-}
+} */
 
 h1 {
   text-align: center;

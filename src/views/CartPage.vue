@@ -36,6 +36,12 @@ export default {
       return this.cart.reduce((total, product) => total + product.price * product.quantity, 0);
     },
   },
+  created() {
+    if (!localStorage.getItem('userLoggedIn')) {
+      // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+      this.$router.push({ name: 'Login' });
+    }
+  },
   methods: {
     getImageUrl(imageName) {
       try {

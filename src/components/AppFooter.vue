@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>&copy; 2024 Trà Sữa Shop. All rights reserved.</p>
+    <p>&copy; Trà Sữa Shop</p>
   </footer>
 </template>
 

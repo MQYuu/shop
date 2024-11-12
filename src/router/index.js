@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '@/views/HomePage.vue'; // Đảm bảo đường dẫn chính xác
-import ProductList from '@/views/ProductList.vue'; // Đảm bảo đường dẫn chính xác
-import CartPage from '@/views/CartPage.vue'; // Đảm bảo đường dẫn chính xác
-import AdminPanel from '@/views/AdminPanel.vue'; // Đảm bảo đường dẫn chính xác
+import HomePage from '@/views/HomePage.vue'; 
+import ProductList from '@/views/ProductList.vue'; 
+import CartPage from '@/views/CartPage.vue'; 
+import LoginPage from '@/views/LoginPage.vue'; 
+import ProductDetail from '@/views/ProductDetail.vue';  // Import ProductDetail
 
 const routes = [
   {
@@ -19,11 +20,24 @@ const routes = [
     path: '/cart',
     name: 'CartPage',
     component: CartPage,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('userLoggedIn')) {
+        next({ name: 'LoginPage' }); // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+      } else {
+        next();
+      }
+    }
   },
   {
-    path: '/admin',
-    name: 'AdminPanel',
-    component: AdminPanel,
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage,
+  },
+  // Thêm route cho trang chi tiết sản phẩm
+  {
+    path: '/product/:id',  // Sử dụng dynamic route
+    name: 'ProductDetail',
+    component: ProductDetail,
   },
 ];
 
