@@ -1,17 +1,144 @@
 {
-  "products": [
+  "bubbleTeas": [
     {
       "id": 1,
-      "name": "Laptop Dell XPS 13",
-      "price": 20000000,
-      "image": "https://example.com/image1.jpg"
+      "name": "Trà Sữa Trân Châu Đường Đen",
+      "description": "Trà sữa kết hợp với trân châu đường đen ngọt ngào.",
+      "price": 50000,
+      "image": "tra-sua-tran-chau-duong-den.jpg"
     },
     {
       "id": 2,
-      "name": "Laptop HP Spectre x360",
-      "price": 25000000,
-      "image": "https://example.com/image2.jpg"
+      "name": "Trà Sữa Matcha",
+      "description": "Hương vị matcha thanh mát, kết hợp với sữa tươi.",
+      "price": 55000,
+      "image": "R.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Trà Sữa Hồng Trà",
+      "description": "Hương vị hồng trà đậm đà, cùng trân châu giòn dai.",
+      "price": 45000,
+      "image": "hong-tra-sua.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Trà Sữa Trà Xanh",
+      "description": "Trà sữa trà xanh thanh mát, phù hợp cho mùa hè.",
+      "price": 48000,
+      "image": "tra-sua-tra-xanh.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Trà Sữa Thái Xanh",
+      "description": "Trà Thái xanh với màu sắc đặc trưng và hương vị mới lạ.",
+      "price": 50000,
+      "image": "tra-sua-thai-xanh.png"
+    },
+    {
+      "id": 6,
+      "name": "Trà Sữa Thái Đỏ",
+      "description": "Hương vị Thái đỏ với độ ngọt vừa phải, phù hợp mọi lứa tuổi.",
+      "price": 50000,
+      "image": "tra-sua-thai-do-c9b17882-a00a-4a0d-8087-ff8a9c7dee19.webp"
+    },
+    {
+      "id": 7,
+      "name": "Trà Sữa Khoai Môn",
+      "description": "Hương vị khoai môn bùi béo, thơm ngon.",
+      "price": 52000,
+      "image": "tra-sua-khoai-mon.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Trà Sữa Dâu",
+      "description": "Hương vị dâu tây ngọt ngào, thích hợp cho những ai thích sự nhẹ nhàng.",
+      "price": 52000,
+      "image": "tra-sua-dau.jpg"
+    },
+    {
+      "id": 9,
+      "name": "Trà Sữa Xoài",
+      "description": "Sữa tươi kết hợp với hương vị xoài ngọt thanh.",
+      "price": 53000,
+      "image": "tra-sua-xoai.jpeg"
+    },
+    {
+      "id": 10,
+      "name": "Trà Sữa Socola",
+      "description": "Trà sữa socola thơm béo, dành cho những ai thích vị đậm đà.",
+      "price": 54000,
+      "image": "tra-sua-socola-bac-ha-thumbnail.jpg"
+    },
+    {
+      "id": 11,
+      "name": "Trà Sữa Dừa",
+      "description": "Hương vị dừa thơm ngon, đậm vị nhiệt đới.",
+      "price": 50000,
+      "image": "tra-sua-dua.webp"
+    },
+    {
+      "id": 12,
+      "name": "Trà Sữa Phô Mai",
+      "description": "Trà sữa phô mai béo ngậy, hương vị độc đáo.",
+      "price": 55000,
+      "image": "tra-sua-pho-mai.jpeg"
+    },
+    {
+      "id": 13,
+      "name": "Trà Sữa Sữa Tươi Trân Châu",
+      "description": "Sữa tươi thanh nhẹ, kết hợp trân châu giòn dai.",
+      "price": 48000,
+      "image": "hinh-anh-tra-sua-tran-chau-dep-mat.jpg"
+    },
+    {
+      "id": 14,
+      "name": "Trà Sữa Bạc Hà",
+      "description": "Hương vị bạc hà thanh mát, thích hợp cho mùa hè.",
+      "price": 53000,
+      "image": "tra-sua-bac-ha.webp"
+    },
+    {
+      "id": 15,
+      "name": "Trà Sữa Kiwi",
+      "description": "Hương vị kiwi chua ngọt, phù hợp với giới trẻ.",
+      "price": 54000,
+      "image": "tra-sua-kiwi.webp"
+    },
+    {
+      "id": 16,
+      "name": "Trà Sữa Đào",
+      "description": "Trà sữa đào thơm ngon, hương vị ngọt thanh.",
+      "price": 52000,
+      "image": "tra-sua-dao.jpg"
+    },
+    {
+      "id": 17,
+      "name": "Trà Sữa Bưởi",
+      "description": "Trà sữa bưởi mới lạ, phù hợp với mọi lứa tuổi.",
+      "price": 55000,
+      "image": "tra-sua-buoi.webp"
+    },
+    {
+      "id": 18,
+      "name": "Trà Sữa Vải",
+      "description": "Hương vị vải thơm mát, ngọt ngào.",
+      "price": 53000,
+      "image": "tra-sua-vai.jpg"
+    },
+    {
+      "id": 19,
+      "name": "Trà Sữa Lựu",
+      "description": "Trà sữa lựu chua ngọt, đầy lôi cuốn.",
+      "price": 54000,
+      "image": "tra-sua-luu.png"
+    },
+    {
+      "id": 20,
+      "name": "Trà Sữa Hoa Hồng",
+      "description": "Hương vị hoa hồng nhẹ nhàng, tinh tế.",
+      "price": 56000,
+      "image": "tra-sua-hoa-hong.avif"
     }
-  ],
-  "users": []
+  ]
 }

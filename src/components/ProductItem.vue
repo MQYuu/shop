@@ -47,49 +47,48 @@
   </script>
   
   <style scoped>
-  .product-item {
-    width: 200px;
-    text-align: center;
-    padding: 15px;
-    margin: 10px;
-    background-color: #fff;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  .product-item img {
-    width: 100%;
-    height: auto;
-    max-height: 200px;
-    object-fit: contain;
-    margin-bottom: 15px;
-  }
-  
-  .product-item h3 {
-    font-size: 1.2em;
-    color: #444;
-    margin: 10px 0;
-  }
-  
-  .product-item p {
-    font-size: 1.1em;
-    color: #888;
-    font-weight: bold;
-    margin: 5px 0;
-  }
-  
-  button {
-    background-color: #ff9f00;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #e68900;
-  }
-  </style>
-  
+.product-item {
+  width: 200px;
+  text-align: center;
+  padding: 15px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.product-item img {
+  width: 100%; /* Đảm bảo hình ảnh chiếm 100% chiều rộng */
+  height: 200px; /* Cố định chiều cao của hình ảnh */
+  object-fit: cover; /* Tự động điều chỉnh tỷ lệ hình ảnh sao cho không bị méo */
+  border-radius: 5px; /* Bo tròn các góc của hình ảnh */
+  margin-bottom: 15px; /* Khoảng cách dưới hình ảnh */
+}
+
+.product-item h3 {
+  font-size: 1.2em;
+  color: #444;
+  margin: 10px 0;
+}
+
+.product-item p {
+  font-size: 1.1em;
+  color: #888;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+button {
+  background-color: #ff9f00;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #e68900;
+}
+</style>
