@@ -6,7 +6,7 @@
         <img :src="getImageUrl(product.image)" alt="Product Image" class="product-image" />
         <div class="product-info">
           <h3>{{ product.name }}</h3>
-          <p class="price">{{ product.price | currency }}</p>
+          <p class="price">{{ formatPrice(product.price) }}</p> <!-- Sử dụng phương thức formatPrice -->
         </div>
       </div>
     </div>
@@ -22,14 +22,8 @@
 }
 
 /* Trường hợp không có sản phẩm */
-p {
-  font-size: 1.2em;
-  color: #888;
-  font-weight: bold;
-  margin-top: 30px;
-}
-</style>
 
+</style>
 
 <script>
 import { getBubbleTeas } from '@/api/bubbleTea';  // Import API function
@@ -66,8 +60,14 @@ export default {
       return products
         .sort((a, b) => b.price - a.price)
         .slice(0, 5);
+    },
+    // Phương thức format giá
+    formatPrice(price) {
+      return price.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+      });
     }
   }
 };
 </script>
-

@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <AppHeader />
+    <!-- Kiểm tra nếu không phải là trang admin thì mới hiển thị Header và Footer -->
+    <AppHeader v-if="!isAdminPage" />
     <router-view />
-    <AppFooter />
+    <AppFooter v-if="!isAdminPage" />
   </div>
 </template>
 
@@ -15,6 +16,13 @@ export default {
   components: {
     AppHeader,
     AppFooter
+  },
+  computed: {
+    // Kiểm tra nếu route hiện tại là một trang admin
+    isAdminPage() {
+      // Kiểm tra xem nếu đường dẫn có chứa "/admin"
+      return this.$route.path.startsWith('/admin');
+    }
   }
 };
 </script>

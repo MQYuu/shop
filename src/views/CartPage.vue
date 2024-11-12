@@ -6,7 +6,7 @@
         <img :src="getImageUrl(product.image)" alt="Product Image" class="cart-item-image" />
         <div class="cart-item-details">
           <h3>{{ product.name }}</h3>
-          <p>{{ product.price | currency }}</p>
+          <p>{{ formatCurrency(product.price) }}</p> <!-- Sử dụng phương thức formatCurrency -->
           <div class="quantity-control">
             <button @click="decreaseQuantity(index)" :disabled="product.quantity <= 1">-</button>
             <span>{{ product.quantity }}</span>
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="cart-summary">
-        <p>Tổng tiền: {{ totalAmount | currency }}</p>
+        <p>Tổng tiền: {{ formatCurrency(totalAmount) }}</p> <!-- Sử dụng phương thức formatCurrency -->
         <button @click="checkout">Thanh toán</button>
       </div>
     </div>
@@ -72,6 +72,13 @@ export default {
       // Logic thanh toán sẽ được thực hiện ở đây, có thể điều hướng đến trang thanh toán.
       alert('Thanh toán thành công!');
     },
+    // Phương thức format giá
+    formatCurrency(price) {
+      return price.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+      });
+    }
   },
 };
 </script>

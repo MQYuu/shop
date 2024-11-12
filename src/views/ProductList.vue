@@ -170,6 +170,12 @@
     gap: 10px;
   }
 }
+p {
+  font-size: 1.2em;
+  color: #888;
+  font-weight: bold;
+  margin-top: 30px;
+}
 </style>
 
 <script>
@@ -236,13 +242,23 @@ export default {
     }
   },
   mounted() {
-    getBubbleTeas()
-      .then(data => {
-        this.products = data;
-      })
-      .catch(error => {
-        console.error('Có lỗi xảy ra khi lấy dữ liệu sản phẩm:', error);
-      });
+    // Kiểm tra xem dữ liệu đã có trong localStorage chưa
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      // Nếu có dữ liệu trong localStorage, sử dụng dữ liệu đó
+      this.products = JSON.parse(storedProducts);
+    } else {
+      // Nếu không có, gọi API để lấy dữ liệu
+      getBubbleTeas()
+        .then(data => {
+          this.products = data;
+          // Lưu dữ liệu vào localStorage
+          localStorage.setItem('products', JSON.stringify(this.products));
+        })
+        .catch(error => {
+          console.error('Có lỗi xảy ra khi lấy dữ liệu sản phẩm:', error);
+        });
+    }
   },
 };
 </script>

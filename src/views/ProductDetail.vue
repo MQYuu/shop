@@ -1,108 +1,90 @@
 <template>
   <div class="product-detail-page">
     <h1>Chi Tiết Sản Phẩm</h1>
-    <div v-if="product">
-      <!-- Sử dụng component ProductDetailCard để hiển thị chi tiết sản phẩm -->
-      <ProductDetailCard
-        :product="product"
-        :formattedPrice="formattedPrice"
-        :getImageUrl="getImageUrl"
-        :addToCartAndRedirect="addToCartAndRedirect"
-        :goBackToProducts="goBackToProducts"
-      />
-    </div>
-    <p v-else>Không tìm thấy sản phẩm.</p>
-
-    <!-- Hiển thị thông báo yêu cầu đăng nhập nếu người dùng chưa đăng nhập -->
-    <div v-if="!isLoggedIn" class="login-prompt">
-      <p>Vui lòng <a href="/login">đăng nhập</a> để thêm sản phẩm vào giỏ hàng.</p>
-    </div>
+    
+    <!-- Card hiển thị chi tiết sản phẩm -->
+    <ProductDetailCard
+      v-if="product"
+      :product="product"
+      :formattedPrice="formattedPrice"
+      :getImageUrl="getImageUrl"
+      :addToCartAndRedirect="addToCartAndRedirect"
+      :goBackToProducts="goBackToProducts"
+    />
+    <p v-else>Đang tải sản phẩm...</p>
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import ProductDetailCard from '@/components/ProductDetailCard.vue'; // Import component
-
-// API fetch function
+import ProductDetailCard from '../components/ProductDetailCard.vue';
 import { getBubbleTeas } from '../api/bubbleTea.js';
 
 export default {
   components: {
-    ProductDetailCard, // Đăng ký component
+    ProductDetailCard
   },
-  setup() {
-    const router = useRouter();
-    const productId = ref(null);
-    const product = ref(null);
-    
-    // Giả sử đây là trạng thái đăng nhập của người dùng
-    const isLoggedIn = ref(false);  // Giá trị này có thể được lấy từ hệ thống xác thực thực tế
-
-    // Fetch bubble teas when the component is mounted
-    onMounted(() => {
-      fetchProductDetails();
-    });
-
-    // Lấy thông tin sản phẩm chi tiết từ API
-    const fetchProductDetails = async () => {
-      try {
-        const products = await getBubbleTeas();
-        const foundProduct = products.find(p => p.id === productId.value);
-        if (foundProduct) {
-          product.value = foundProduct;
-        } else {
-          console.error('Sản phẩm không tìm thấy!');
-        }
-      } catch (error) {
-        console.error('Lỗi khi tải sản phẩm:', error);
-      }
+  data() {
+    return {
+      product: null,
+      formattedPrice: '',
     };
+  },
+  methods: {
+    // Fetch dữ liệu sản phẩm
+    fetchProduct() {
+      const productId = this.$route.params.id;
 
-    // Giả sử sản phẩm có ID = 1
-    productId.value = 1; 
+      getBubbleTeas()
+        .then(data => {
+          this.product = data.find(p => p.id === productId);
+          if (this.product) {
+            this.formatPrice();
+          } else {
+            console.error('Không tìm thấy sản phẩm');
+          }
+        })
+        .catch(error => {
+          console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
+        });
+    },
+    
+    // Định dạng giá
+    formatPrice() {
+      if (this.product) {
+        this.formattedPrice = new Intl.NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND'
+        }).format(this.product.price);
+      }
+    },
 
-    const formattedPrice = computed(() => {
-      return product.value ? product.value.price.toLocaleString('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-      }) : '';
-    });
-
-    const getImageUrl = (imageName) => {
+    // Lấy URL ảnh từ thư mục assets
+    getImageUrl(imageName) {
       try {
         return require(`@/assets/images/${imageName}`);
       } catch (error) {
         console.error('Không thể tải ảnh:', error);
         return '';
       }
-    };
+    },
 
-    const addToCartAndRedirect = (product) => {
-      if (!isLoggedIn.value) {
-        alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.');
-        // router.push('/login');  // Chuyển hướng người dùng đến trang đăng nhập
-      } else {
-        console.log(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
-        alert(`Sản phẩm "${product.name}" đã được thêm vào giỏ hàng!`);
-        router.push('/cart');
-      }
-    };
+    // Thêm sản phẩm vào giỏ hàng và chuyển hướng đến trang giỏ hàng
+    addToCartAndRedirect(product) {
+      this.$store.commit('addToCart', product); // Gọi mutation addToCart
+      console.log('Thêm vào giỏ hàng:', product);
 
-    const goBackToProducts = () => {
-      router.push('/productslist');
-    };
+      // Điều hướng đến trang giỏ hàng
+      this.$router.push('/cart');
+    },
 
-    return {
-      product,
-      formattedPrice,
-      getImageUrl,
-      addToCartAndRedirect,
-      goBackToProducts,
-      isLoggedIn,  // Trả về biến trạng thái đăng nhập
-    };
+    // Quay lại trang danh sách sản phẩm
+    goBackToProducts() {
+      this.$router.push('/productslist');
+    }
   },
+  mounted() {
+    this.fetchProduct();
+  }
 };
 </script>
 
