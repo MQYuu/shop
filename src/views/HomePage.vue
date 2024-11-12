@@ -20,9 +20,12 @@
   text-align: center;
   padding: 30px 20px;
 }
-
-/* Trường hợp không có sản phẩm */
-
+p {
+  font-size: 1.2em;
+  color: #888;
+  font-weight: bold;
+  margin-top: 30px;
+}
 </style>
 
 <script>
