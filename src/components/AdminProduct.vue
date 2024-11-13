@@ -56,19 +56,18 @@
 </template>
 
 <script>
-import { getBubbleTeas, addBubbleTea, updateBubbleTea, deleteBubbleTea } from '../api/bubbleTea'; 
+import { getBubbleTeas, addBubbleTea, updateBubbleTea, deleteBubbleTea } from '../api/bubbleTea';
 
 export default {
   name: 'AdminProduct',
   data() {
     return {
-      products: [], // Danh sách sản phẩm
-      newProduct: { name: '', price: '', description: '', image: null }, // Dữ liệu cho sản phẩm mới
-      editingProduct: null, // Sản phẩm đang được chỉnh sửa
+      products: [],
+      newProduct: { name: '', price: '', description: '', image: null },
+      editingProduct: null,
     };
   },
   methods: {
-    // Lấy danh sách sản phẩm
     fetchProducts() {
       getBubbleTeas()
         .then(data => {
@@ -79,14 +78,13 @@ export default {
         });
     },
 
-    // Thêm sản phẩm mới
     addProduct() {
       const formData = new FormData();
       formData.append('name', this.newProduct.name);
       formData.append('price', this.newProduct.price);
       formData.append('description', this.newProduct.description);
       if (this.newProduct.image) {
-        formData.append('image', this.newProduct.image); // Thêm hình ảnh vào FormData
+        formData.append('image', this.newProduct.image);
       }
 
       addBubbleTea(formData)
@@ -100,7 +98,6 @@ export default {
         });
     },
 
-    // Hiển thị thông báo thành công
     showSuccessMessage(message) {
       const successMessage = document.createElement('div');
       successMessage.textContent = message;
@@ -119,18 +116,21 @@ export default {
       }, 3000);
     },
 
-    // Xử lý thay đổi hình ảnh
     handleImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        this.newProduct.image = file; // Lưu tệp hình ảnh
+        const reader = new FileReader();
+        reader.onload = () => {
+          // Lưu nội dung ảnh trong newProduct.image
+          this.newProduct.image = file;
+        };
+        reader.readAsDataURL(file);
       }
     },
 
-    // Lấy URL ảnh từ thư mục src/assets/images
     getImageUrl(imageName) {
-      // Dùng require hoặc import để truy cập hình ảnh trong thư mục src
-      return require(`@/assets/images/${imageName}`);  // @ là alias cho src trong Vue CLI
+      // Truy cập ảnh trong thư mục public
+      return `/images/${imageName}`;
     },
 
     editProduct(product) {
@@ -171,6 +171,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Style cho trang quản lý sản phẩm */
