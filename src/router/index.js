@@ -4,9 +4,9 @@ import ProductList from '@/views/ProductList.vue';
 import CartPage from '@/views/CartPage.vue'; 
 import LoginPage from '@/views/LoginPage.vue'; 
 import ProductDetail from '@/views/ProductDetail.vue';  // Import ProductDetail
-import AdminDashboard from '@/components/AdminDashboard.vue';  // Trang admin
-import AdminProduct from '@/components/AdminProduct.vue'; // Trang quản lý sản phẩm admin
-import AdminUser from '@/components/AdminUser.vue'; // Trang quản lý người dùng admin
+import AdminDashboard from '@/views/AdminDashboard.vue';  // Trang admin
+import AdminProduct from '@/views/AdminProduct.vue'; // Trang quản lý sản phẩm admin
+import AdminUser from '@/views/AdminUser.vue'; // Trang quản lý người dùng admin
 
 const routes = [
   {

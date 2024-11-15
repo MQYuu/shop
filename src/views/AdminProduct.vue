@@ -3,7 +3,7 @@
     <h2>Quản lý sản phẩm</h2>
 
     <!-- Form thêm sản phẩm mới -->
-    <div class="add-product-form">
+    <div class="add-product-form" v-if="!editingProduct">
       <h3>Thêm sản phẩm mới</h3>
       <form @submit.prevent="addProduct">
         <label for="name">Tên sản phẩm:</label>
@@ -15,10 +15,25 @@
         <label for="description">Mô tả:</label>
         <textarea v-model="newProduct.description" id="description" required></textarea>
 
-        <label for="image">Hình ảnh:</label>
-        <input type="file" id="image" @change="handleImageChange" />
-
         <button type="submit">Thêm sản phẩm</button>
+      </form>
+    </div>
+
+    <!-- Form sửa sản phẩm -->
+    <div class="edit-product-form" v-if="editingProduct">
+      <h3>Sửa sản phẩm</h3>
+      <form @submit.prevent="updateProduct">
+        <label for="name">Tên sản phẩm:</label>
+        <input v-model="editingProduct.name" type="text" id="name" required />
+
+        <label for="price">Giá:</label>
+        <input v-model="editingProduct.price" type="number" id="price" required />
+
+        <label for="description">Mô tả:</label>
+        <textarea v-model="editingProduct.description" id="description" required></textarea>
+
+        <button type="submit">Lưu</button>
+        <button type="button" @click="cancelEdit">Hủy</button>
       </form>
     </div>
 
@@ -31,7 +46,6 @@
             <th>Tên sản phẩm</th>
             <th>Giá</th>
             <th>Mô tả</th>
-            <th>Hình ảnh</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -40,10 +54,6 @@
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
             <td>{{ product.description }}</td>
-            <td>
-              <!-- Hiển thị ảnh -->
-              <img :src="getImageUrl(product.image)" alt="Image" width="50" height="50" />
-            </td>
             <td>
               <button @click="editProduct(product)">Sửa</button>
               <button @click="deleteProduct(product.id)">Xóa</button>
@@ -63,7 +73,7 @@ export default {
   data() {
     return {
       products: [],
-      newProduct: { name: '', price: '', description: '', image: null },
+      newProduct: { name: '', price: '', description: '' },
       editingProduct: null,
     };
   },
@@ -79,18 +89,16 @@ export default {
     },
 
     addProduct() {
-      const formData = new FormData();
-      formData.append('name', this.newProduct.name);
-      formData.append('price', this.newProduct.price);
-      formData.append('description', this.newProduct.description);
-      if (this.newProduct.image) {
-        formData.append('image', this.newProduct.image);
-      }
+      const productData = {
+        name: this.newProduct.name,
+        price: this.newProduct.price,
+        description: this.newProduct.description,
+      };
 
-      addBubbleTea(formData)
+      addBubbleTea(productData)
         .then(() => {
           this.fetchProducts();
-          this.newProduct = { name: '', price: '', description: '', image: null };
+          this.newProduct = { name: '', price: '', description: '' };
           this.showSuccessMessage('Thêm sản phẩm thành công!');
         })
         .catch(error => {
@@ -116,44 +124,30 @@ export default {
       }, 3000);
     },
 
-    handleImageChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          // Lưu nội dung ảnh trong newProduct.image
-          this.newProduct.image = file;
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-
-    getImageUrl(imageName) {
-      // Truy cập ảnh trong thư mục public
-      return `/images/${imageName}`;
-    },
-
     editProduct(product) {
       this.editingProduct = { ...product };
     },
 
     updateProduct() {
-      const formData = new FormData();
-      formData.append('name', this.editingProduct.name);
-      formData.append('price', this.editingProduct.price);
-      formData.append('description', this.editingProduct.description);
-      if (this.editingProduct.image) {
-        formData.append('image', this.editingProduct.image);
-      }
+      const updatedProductData = {
+        name: this.editingProduct.name,
+        price: this.editingProduct.price,
+        description: this.editingProduct.description,
+      };
 
-      updateBubbleTea(this.editingProduct.id, formData)
+      updateBubbleTea(this.editingProduct.id, updatedProductData)
         .then(() => {
           this.fetchProducts();
           this.editingProduct = null;
+          this.showSuccessMessage('Cập nhật sản phẩm thành công!');
         })
         .catch(error => {
           console.error('Lỗi khi cập nhật sản phẩm:', error);
         });
+    },
+
+    cancelEdit() {
+      this.editingProduct = null;
     },
 
     deleteProduct(id) {
@@ -171,7 +165,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 /* Style cho trang quản lý sản phẩm */
