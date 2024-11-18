@@ -30,7 +30,7 @@ p {
 </style>
   
 <script>
-export default {
+export default { // props : truyền dữ liệu từ compponent cha sang component con
   props: {
     product: Object, // Nhận dữ liệu sản phẩm từ component cha
   },

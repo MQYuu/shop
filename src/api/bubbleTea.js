@@ -12,7 +12,7 @@ export const getBubbleTeas = () => {
     });
 };
 
-// Thêm một sản phẩm bubble tea mới
+// Thêm một sản phẩm bubble tea mới, từ khóa export giúp hàm có thể sử dung hàm ở chỗ khác
 export const addBubbleTea = (newBubbleTea) => {
   const data = {
     name: newBubbleTea.name,
